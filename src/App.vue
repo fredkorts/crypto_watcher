@@ -6,15 +6,31 @@
       :size="50"
       :width="5"
       :value="timer"
-      color="primary"
+         color="primary"
     >
       {{ timer }}
-    </v-progress-circular>
+      </v-progress-circular>
     </div>
     <div class="currency-container">
       <div class="currency-container coin-container" v-for="coin in coins">
         <span class="coin-id">{{ coin.id }}</span>
         <span class="coin-price">{{ coin.price_usd }}</span>
+
+        <div class="coin-price__percentage" v-bind:class="valueColor(coin.percent_change_1h)">
+          <div class="time-period">1h</div>
+          <div class="period-value" >{{ coin.percent_change_1h }}</div>
+        </div>
+
+        <div class="coin-price__percentage" v-bind:class="valueColor(coin.percent_change_24h)">
+          <div class="time-period">24h</div>
+          <div class="period-value">{{ coin.percent_change_24h }}</div>
+        </div>
+
+        <div class="coin-price__percentage" v-bind:class="valueColor(coin.percent_change_7d)">
+          <div class="time-period">1w</div>
+          <div class="period-value">{{ coin.percent_change_7d }}</div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -29,7 +45,9 @@ export default {
     return {
       //Store cryptocurrency data in this array.
       coins: [],
-      timer: 0
+      timer: 0,
+      positiveChange: 'green-value',
+      negativeChange: 'red-value'
     }
   },
   mounted() {
@@ -54,8 +72,16 @@ export default {
       } else {
         this.timer++;
       }
+    },
+    valueColor(valCol) {
+      if (valCol > 0) {
+        console.log(valCol);
+        return this.positiveChange;
+      } else {
+        console.log(valCol);
+        return this.negativeChange;
+      }
     }
-
   }
 }
 </script>
@@ -94,6 +120,7 @@ body {
     justify-content: center;
     .coin-price {
       font-size: calc(1em + 1vw);
+      margin-bottom: 1em;
     }
   }
 }
@@ -102,5 +129,30 @@ body {
   right: 0;
   top: 0;
   margin: 2em;
+}
+.coin-price__percentage {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .time-period {
+    width: 50%;
+    padding-right: 1em;
+    text-align: right;
+  }
+  .period-value {
+    width: 50%;
+    padding-left: 1em;
+    text-align: left;
+  }
+}
+.green-value {
+    .period-value {
+      color: green;
+  }
+}
+.red-value {
+    .period-value {
+      color: red;
+  }
 }
 </style>
