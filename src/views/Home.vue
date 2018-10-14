@@ -1,6 +1,6 @@
 <template>
   <div class="currency-container">
-    <div class="currency-container coin-container" v-for="coin in coins">
+    <div class="currency-container coin-container" v-for="coin in coins" v-on:click="activeCoin(coin.id)">
       <v-card hover tile>
         <span class="coin-id">{{ coin.id }}</span>
         <span class="coin-price">{{ coin.price_usd }}</span>
@@ -33,6 +33,7 @@ export default {
     return {
       //Store cryptocurrency data in this array.
       coins: [],
+      active_coin: "",
       timer: 0,
       positiveChange: 'green-value',
       negativeChange: 'red-value'
@@ -67,6 +68,10 @@ export default {
       } else {
         return this.negativeChange;
       }
+    },
+    activeCoin(coinID) {
+      this.active_coin = coinID;
+      console.log(this.active_coin);
     }
   }
 }
